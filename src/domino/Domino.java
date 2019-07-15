@@ -43,7 +43,7 @@ public class Domino extends JFrame {
 		
 		//Componentes gráficos
 		centralLabel = new JLabel(new ImageIcon(bufferFondo));
-		centralLabel.setLayout(new FlowLayout());
+		centralLabel.setLayout(new GridBagLayout());
 		add(centralLabel);
 	}
 }
