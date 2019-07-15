@@ -16,5 +16,9 @@ public class Ficha {
 		return lado2;
 	}
 	
+	public int  getValor() {
+		int valor = lado1+lado2;
+		return valor;
+	}
 	
 }

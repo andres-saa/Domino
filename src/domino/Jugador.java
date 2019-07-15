@@ -12,6 +12,20 @@ public class Jugador {
 		this.juego=juego;
 	}
 
+	
+	public Ficha dameTufichaMasAlta(Jugador jugador) {
+		Ficha fichaMasAlta = juego.get(0);
+
+		for (int cual = 0; cual < juego.size(); cual++) {
+
+			if (fichaMasAlta.getValor() < juego.get(cual).getValor())
+				fichaMasAlta = juego.get(cual);
+		}
+		return fichaMasAlta;
+	}
+	
+	
+	
 	public String getNombre() {
 		return nombre;
 	}
