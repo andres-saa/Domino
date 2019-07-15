@@ -20,6 +20,7 @@ public class Baraja {
 		}
 	}
 	
+	//reparte 7 fichjas a un jugador
 	public void repartir( Jugador jugador) {
 		int cualFicha=aleatorio.nextInt(baraja.size());
 		for (int cuantas=0;cuantas<7;cuantas++) {
