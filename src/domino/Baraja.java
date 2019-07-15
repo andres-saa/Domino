@@ -1,10 +1,12 @@
 package domino;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Baraja {
 
 	ArrayList<Ficha> baraja = new ArrayList();
+	Random aleatorio =new Random();
 
 	public void armarBaraja() {
 		//para que las fichas no se repitan ya que ficha(a,b)=ficha(b,a)
@@ -17,4 +19,13 @@ public class Baraja {
 			contador++;	
 		}
 	}
+	
+	public void repartir( Jugador jugador) {
+		int cualFicha=aleatorio.nextInt(baraja.size());
+		for (int cuantas=0;cuantas<7;cuantas++) {
+			jugador.getJuego().add(baraja.get(cualFicha));
+			baraja.remove(cualFicha);
+		}
+
+	};
 }
