@@ -1,6 +1,7 @@
 package domino;
 
 public class Ficha {
+	
 	private int lado1,lado2;
 	
 	public Ficha(int lado1,int lado2) {
@@ -17,8 +18,6 @@ public class Ficha {
 	}
 	
 	public int  getValor() {
-		int valor = lado1+lado2;
-		return valor;
+		return lado1+lado2;
 	}
-	
 }
