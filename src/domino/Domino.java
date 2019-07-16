@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -23,7 +24,7 @@ public class Domino extends JFrame {
 	ArrayList<Ficha> juego2=new ArrayList<Ficha>();
 	Jugador jugador1 = new Jugador(juego1);
 	Jugador jugador2 = new Jugador(juego2);
-	ArrayList<JLabel> mesa = new ArrayList<JLabel>();
+	ArrayList<JButton> mesa = new ArrayList<JButton>();
 	JPanel panel = new JPanel(); 
 	
 
@@ -76,7 +77,7 @@ public class Domino extends JFrame {
 		// vamos a crear los labels de las fichas y las agrega al array de la mesa.
 		for (int lado1 = 0; lado1 < 7; lado1++) {
 			for (int lado2 = contador; lado2 < 7; lado2++) {
-				mesa.add(new JLabel(new ImageIcon("src/fichas/"+lado1+""+lado2+".png")));
+				mesa.add(new JButton(new ImageIcon("src/fichas/"+lado1+""+lado2+".png")));
 			}
 		}
 		establecerPosicionAlasFichas();
