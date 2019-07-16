@@ -106,10 +106,13 @@ public class Domino extends JFrame {
 
 	}
 
-	public void quienEmpieza() {
+	public Jugador  quienEmpieza() {
+		Jugador jugadorQueEmpieza=new Jugador(null);;
+		if (primeraFichaJugador1.getValor()>primeraFichaJugador2.getValor())
+			jugadorQueEmpieza=jugador1;
+		else jugadorQueEmpieza=jugador2;
 		
-		//primeraFichajugador1=
-		
+		return jugadorQueEmpieza;
 	};
 }
 
