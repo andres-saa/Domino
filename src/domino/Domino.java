@@ -21,14 +21,13 @@ public class Domino extends JFrame {
 		try {
 			bufferFondo = ImageIO.read(new File(rutaFondo));
 			initGUI();
-			
 			//Default window config.
 			this.setUndecorated(false);
 			pack();
 			this.setResizable(false);
 			this.setLocationRelativeTo(null);
 			this.setVisible(true);
-		}
+			this.setSize(1280,720);		}
 		catch (Exception e) {
 			//TODO: handle expection
 			JOptionPane.showMessageDialog(null, "No se ha encontrado la imagen de fondo");
