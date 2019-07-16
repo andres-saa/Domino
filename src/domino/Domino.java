@@ -90,6 +90,10 @@ public class Domino extends JFrame {
 		
 		for(int cual=0;cual<mesa.size();cual++) {
 			mesa.get(cual).setBounds(posicionInicialx,posicionInicialy,55,85);
+			mesa.get(cual).setBorderPainted(false);
+			mesa.get(cual).setContentAreaFilled(false);
+			mesa.get(cual).setFocusPainted(false);
+			mesa.get(cual).setOpaque(false);
 			posicionInicialx+=48;
 		}
 	}
