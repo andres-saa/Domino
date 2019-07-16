@@ -1,10 +1,12 @@
 package domino;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -15,12 +17,25 @@ import javax.swing.JPanel;
 
 public class Domino extends JFrame {
 	
-	ImageIcon fondo = new ImageIcon("src/imagenes/fondo.jpg");
-	private BufferedImage bufferFondo = null;
-	private JLabel centralLabel;
+	
+	Baraja fichas= new Baraja();
+	ArrayList<Ficha> juego1=new ArrayList<Ficha>();
+	ArrayList<Ficha> juego2=new ArrayList<Ficha>();
+	Jugador jugador1 = new Jugador(juego1);
+	Jugador jugador2 = new Jugador(juego2);
+	ArrayList<JLabel> mesa = new ArrayList<JLabel>();
+	JPanel panel = new JPanel(); 
+	
+
+	//private BufferedImage bufferFondo = null;
+	//private JLabel centralLabel;
 	
 	public Domino() {
 		try {
+			
+		//	fichas.repartir(jugador1);
+		//	fichas.repartir(jugador2);
+			
 			initGUI();
 			
 			//Default window config.
@@ -38,22 +53,47 @@ public class Domino extends JFrame {
 	}
 	
 	private void initGUI() {
+		JLabel imagenDeFondo=new JLabel(new ImageIcon("src/imagenes/fondo.jpg"));
+		crearMesa();
 		
-		//establecer el layout
-		//Container contanier = getContentPane();
-		//contanier.setLayout(new FlowLayout());
-		
-		/*Componentes gráficos
-		centralLabel = new JLabel(new ImageIcon(bufferFondo));
-		centralLabel.setLayout(new GridBagLayout());
-		add(centralLabel);*/
-		
-		JLabel imagenDeFondo=new JLabel(fondo);
-		JPanel panel = new JPanel(); 
 		this.getContentPane().add(panel);
-		this.getContentPane().add(imagenDeFondo);
+		panel.setLayout(null);
+		imagenDeFondo.setBounds(0,0,1280,720);
+		panel.add(imagenDeFondo);
 		
-		panel.setBackground(Color.BLACK);
+		for (int i=0;i<8;i++) {
+		imagenDeFondo.add(mesa.get(i));
+		}
+		
 	}
+
 	
+	public void crearMesa() {
+
+
+		// para que las fichas no se repitan ya que ficha(a,b)=ficha(b,a)
+		int contador = 0;
+		// vamos a crear los labels de las fichas y las agrega al array de la mesa.
+		for (int lado1 = 0; lado1 < 7; lado1++) {
+			for (int lado2 = contador; lado2 < 7; lado2++) {
+				mesa.add(new JLabel(new ImageIcon("src/fichas/"+lado1+""+lado2+".png")));
+			}
+		}
+		establecerPosicionAlasFichas();
+	}
+
+
+	public void establecerPosicionAlasFichas() {
+		int posicionInicialx=200;
+		int posicionInicialy=200;
+		
+		for(int cual=0;cual<mesa.size();cual++) {
+			mesa.get(cual).setBounds(posicionInicialx,posicionInicialy,55,85);
+			posicionInicialx+=48;
+		}
+	}
+
 }
+
+
+
