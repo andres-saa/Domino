@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 
 public class Domino extends JFrame {
 
-	Baraja fichas = new Baraja();
+
 	ArrayList<Ficha> juego1 = new ArrayList<Ficha>();
 	ArrayList<Ficha> juego2 = new ArrayList<Ficha>();
 	Jugador jugador1 = new Jugador(juego1);
@@ -28,7 +28,7 @@ public class Domino extends JFrame {
 	Ficha primeraFichaJugador2=new Ficha(0,0,new ImageIcon());
 	Random PrimeraFicha=new Random();
 
-	ArrayList<JButton> mesa = new ArrayList<JButton>();
+	public static final ArrayList<JButton> mesa = new ArrayList<JButton>();
 	JPanel panel = new JPanel();
 
 	// private BufferedImage bufferFondo = null;
@@ -65,7 +65,8 @@ public class Domino extends JFrame {
 		panel.setLayout(null);
 		imagenDeFondo.setBounds(0, 0, 1280, 720);
 		panel.add(imagenDeFondo);
-
+		
+		//añadimos las 28 fichas al panel;
 		for (int i = 0; i < 28; i++) {
 			imagenDeFondo.add(mesa.get(i));
 		}
