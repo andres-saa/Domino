@@ -62,7 +62,7 @@ public class Domino extends JFrame {
 		imagenDeFondo.setBounds(0,0,1280,720);
 		panel.add(imagenDeFondo);
 		
-		for (int i=0;i<8;i++) {
+		for (int i=0;i<28;i++) {
 		imagenDeFondo.add(mesa.get(i));
 		}
 		
@@ -79,26 +79,30 @@ public class Domino extends JFrame {
 			for (int lado2 = contador; lado2 < 7; lado2++) {
 				mesa.add(new JButton(new ImageIcon("src/fichas/"+lado1+""+lado2+".png")));
 			}
+			contador++;
 		}
 		establecerPosicionAlasFichas();
 	}
 
-
 	public void establecerPosicionAlasFichas() {
-		int posicionInicialx=200;
-		int posicionInicialy=200;
-		
-		for(int cual=0;cual<mesa.size();cual++) {
-			mesa.get(cual).setBounds(posicionInicialx,posicionInicialy,55,85);
-			mesa.get(cual).setBorderPainted(false);
-			mesa.get(cual).setContentAreaFilled(false);
-			mesa.get(cual).setFocusPainted(false);
-			mesa.get(cual).setOpaque(false);
-			posicionInicialx+=48;
+		int posicionInicialx = 200;
+		int posicionInicialy = 180;
+		int permutador=0;
+		for (int i = 0; i < 4; i++) {
+			for (int cual = permutador; cual < permutador+7; cual++) {
+				mesa.get(cual).setBounds(posicionInicialx, posicionInicialy, 43, 85);
+				// mesa.get(cual).setBorderPainted(false);
+				// mesa.get(cual).setContentAreaFilled(false);
+				// mesa.get(cual).setFocusPainted(true);
+				// mesa.get(cual).setOpaque(true);
+				posicionInicialx += 48;
+			}
+			posicionInicialx=200;
+			permutador+=7;
+			posicionInicialy += 89;
 		}
+
 	}
-
 }
-
 
 
