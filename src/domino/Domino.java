@@ -31,12 +31,11 @@ public class Domino extends JFrame {
 	// Ficha primeraFichaJugador1=new Ficha(0,0,0,new ImageIcon());
 	// Ficha primeraFichaJugador2=new Ficha(0,0,0,new ImageIcon());
 	Random PrimeraFicha = new Random();
-	Jugador jugador=new Jugador(juego1);
-	Jugador casa=new Jugador(juego2);
-	Baraja baraja=new Baraja();
-	JLabel imagenDeFondo = new JLabel();
-			
-
+	Jugador jugador = new Jugador(juego1);
+	Jugador casa = new Jugador(juego2);
+	Baraja baraja = new Baraja();
+	JLabel imagenDeFondo = new JLabel(new ImageIcon("src/imagenes/fondo.jpg"));
+	boolean escogiendoFichaInicial;
 	ArrayList<JButton> mesa = new ArrayList<JButton>();
 	JPanel panel = new JPanel();
 
@@ -45,10 +44,6 @@ public class Domino extends JFrame {
 
 	public Domino() {
 		try {
-
-			// fichas.repartir(jugador1);
-			// fichas.repartir(jugador2);
-
 			initGUI();
 
 			// Default window config.
@@ -67,8 +62,8 @@ public class Domino extends JFrame {
 	}
 
 	private void initGUI() {
-		JLabel imagenDeFondo = new JLabel(new ImageIcon("src/imagenes/fondo.jpg"));
 		crearMesa();
+		escogiendoFichaInicial=true;
 		// quienEmpieza();
 		this.getContentPane().add(panel);
 		panel.setLayout(null);
@@ -87,11 +82,9 @@ public class Domino extends JFrame {
 		// para que las fichas no se repitan ya que ficha(a,b)=ficha(b,a)
 		// vamos a crear los labels de las fichas y las agrega al array de la mesa.
 		escucha = new Escucha();
-		
-		
+
 		for (int lado1 = 0; lado1 < 28; lado1++) {
 			mesa.add(new JButton(new ImageIcon("src/fichas/alr.png")));
-
 			mesa.get(lado1).addMouseListener(escucha);
 		}
 		establecerPosicionAlasFichas();
@@ -120,85 +113,98 @@ public class Domino extends JFrame {
 		}
 	}
 
-	
 	public void iniciarPartida() {
 		baraja.repartir(jugador);
 		baraja.repartir(casa);
-		imagenDeFondo.removeAll();
+		repartir(jugador);
+		repartir(casa);
+
 	}
-	/*public void graficarFichas(Jugador quien) {
-		for (int cual=0;cual<quien.getJuego().size();cual++) {
-			int posicionInicialx = 200;
-			int posicionInicialy = 200;
-			int permutador = 0;
-			for (int i = 0; i < 4; i++) {
-				for (int cual = permutador; cual < permutador + 7; cual++) {
-					mesa.get(cual).setBounds(posicionInicialx, posicionInicialy, 43, 85);
-					posicionInicialx += 48;
-				}
-				posicionInicialx = 200;
-				permutador += 7;
-				posicionInicialy += 89;
+	
+public void repartir(Jugador player) {
+		int inicial = 224;
+		if (player == jugador) {
+
+			for (int i = 0; i < 7; i++) {
+				mesa.get(i).setBounds(inicial, 613, 42, 85);
+				inicial += 46;
 			}
+		} else if (player==casa)
+			for (int i = 7; i < 14; i++) {
+				mesa.get(i).setBounds(inicial, 21, 42, 85);
+				inicial += 46;
+			}
+		ponerFichasDeEspalda();
+		escogiendoFichaInicial=false;
+	}
+	
+public void ponerFichasDeEspalda() {
+		JButton ficha;
+		for (int i=0;i<27;i++){
+		ficha=(JButton) imagenDeFondo.getComponents()[i];
+		ficha.setIcon(new ImageIcon("src/fichas/alr.png"));
+		
 		}
-	}*/
-	
-	
+	}
+
 	private class Escucha implements MouseListener {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
 		
+			// TODO Auto-generated method stub
+
 			if (e.getButton() == 1) {
-				cara = true;
+				
+				if(escogiendoFichaInicial) {
 
 				// panel.repaint();
-				JButton laFicha = (JButton) e.getSource();
-				int valorJugador1, valorJugador2;
+				JButton fichaJugador = (JButton) e.getSource();
 				Random aleatorio = new Random();
-
+				// el jugador obtiene los valores de su ficha
 				int numero1Jugador1 = aleatorio.nextInt(7);
 				int numero2Jugador1 = aleatorio.nextInt(7);
-
+				// valores para la ficha del pc
 				int numero1Jugador2, numero2Jugador2;
+				// un boton que va arepresentar la ficha de la maquina
 				JButton fichaMaquina;
+				// obtener otra ficha si las dos son iguales
 				do {
-
+					// dar valores aleatorios a la ficha del pc
 					numero1Jugador2 = aleatorio.nextInt(7);
 					numero2Jugador2 = aleatorio.nextInt(7);
-					fichaMaquina =(JButton) laFicha.getParent().getComponents()[aleatorio.nextInt(25)];
-				} while (numero1Jugador1 == numero1Jugador2 && numero2Jugador1 == numero2Jugador2 && fichaMaquina.equals(laFicha));
+					fichaMaquina = (JButton) fichaJugador.getParent().getComponents()[aleatorio.nextInt(25)];
 
-				
-				
+				} while (numero1Jugador1 == numero1Jugador2 && numero2Jugador1 == numero2Jugador2
+						&& fichaMaquina.equals(fichaJugador));
+
 				if (numero1Jugador1 < numero2Jugador1) {
-					laFicha.setIcon(new ImageIcon("src/fichas/" + numero1Jugador1 + "" + numero2Jugador1 + ".png"));
+					fichaJugador
+							.setIcon(new ImageIcon("src/fichas/" + numero1Jugador1 + "" + numero2Jugador1 + ".png"));
 				} else {
-					laFicha.setIcon(new ImageIcon("src/fichas/" + numero2Jugador1 + "" + numero1Jugador1 + ".png"));
-				}
-				
-				if (numero1Jugador2 < numero2Jugador2) {
-					fichaMaquina.setIcon(new ImageIcon("src/fichas/" + numero1Jugador2 + "" + numero2Jugador2 + ".png"));
-				} else {
-					fichaMaquina.setIcon(new ImageIcon("src/fichas/" + numero2Jugador2 + "" + numero1Jugador2 + ".png"));
-				}
-				
-				if (numero1Jugador1+numero2Jugador1>numero1Jugador2+numero2Jugador2) {
-					JOptionPane.showMessageDialog(null,"EMPIEZAS TU");
-					
-				}else {
-					JOptionPane.showMessageDialog(null,"EMPIEZA LA CASA");
+					fichaJugador
+							.setIcon(new ImageIcon("src/fichas/" + numero2Jugador1 + "" + numero1Jugador1 + ".png"));
 				}
 
-			
-				actualizarFondo();
+				if (numero1Jugador2 < numero2Jugador2) {
+					fichaMaquina
+							.setIcon(new ImageIcon("src/fichas/" + numero1Jugador2 + "" + numero2Jugador2 + ".png"));
+				} else {
+					fichaMaquina
+							.setIcon(new ImageIcon("src/fichas/" + numero2Jugador2 + "" + numero1Jugador2 + ".png"));
+				}
+
+				if (numero1Jugador1 + numero2Jugador1 > numero1Jugador2 + numero2Jugador2) {
+					JOptionPane.showMessageDialog(null, "EMPIEZAS TU");
+
+				} else {
+					JOptionPane.showMessageDialog(null, "EMPIEZA LA CASA");
+				}
 				iniciarPartida();
+			actualizarFondo();
 			}
-			// crearMesa();
-			// mesa.get(0).add(new ImageIcon(""));
+			}
 		}
-		
 
 		@Override
 		public void mouseEntered(MouseEvent arg0) {
@@ -225,11 +231,5 @@ public class Domino extends JFrame {
 		}
 
 	}
-	/*
-	 * public Jugador quienEmpieza() { Jugador jugadorQueEmpieza=new Jugador(null);;
-	 * if (primeraFichaJugador1.getValor()>primeraFichaJugador2.getValor())
-	 * jugadorQueEmpieza=jugador1; else jugadorQueEmpieza=jugador2;
-	 * 
-	 * return jugadorQueEmpieza; };
-	 */
+
 }
