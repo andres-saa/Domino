@@ -34,7 +34,7 @@ public class Domino extends JFrame {
 	Baraja baraja = new Baraja();
 	JLabel imagenDeFondo = new JLabel(new ImageIcon("src/imagenes/fondo.jpg"));
 	boolean escogiendoFichaInicial=true;
-	boolean comiendo=true;
+	//boolean comiendo=true;
 	ArrayList<Ficha> mesa = new ArrayList<Ficha>();
 	JPanel panel = new JPanel();
 
@@ -80,7 +80,7 @@ public class Domino extends JFrame {
 			imagenDeFondo.add(baraja.getBaraja().get(cual));
 		}
 		for (int cual = 0; cual < baraja.getBaraja().size(); cual++) {
-		//	taparFicha(baraja.getBaraja().get(cual));
+			taparFicha(baraja.getBaraja().get(cual));
 		}
 		
 		establecerPosicionAlasFichas();
@@ -99,8 +99,7 @@ public class Domino extends JFrame {
 
 		}
 		
-		//ArrayList<Ficha> barajaAuxiliar=new ArrayList<Ficha>();
-		for (int i=0;i<barajaAuxiliar.getBaraja().size();i++ ){
+			for (int i=0;i<barajaAuxiliar.getBaraja().size();i++ ){
 			int cual = aleatorio.nextInt(barajaAuxiliar.getBaraja().size());
 			System.currentTimeMillis();
 			baraja.getBaraja().add(barajaAuxiliar.getBaraja().get(cual));
@@ -110,7 +109,7 @@ public class Domino extends JFrame {
 	}
 
  	public void establecerPosicionAlasFichas() {
-		if (escogiendoFichaInicial||comiendo==false) {
+		
 		int posicionInicialx = 200;
 		int posicionInicialy = 180;
 		int permutador = 0;
@@ -127,9 +126,8 @@ public class Domino extends JFrame {
 			
 		}
 
-	}
  	public void actualizar() {
- 		establecerPosicionAlasFichas();
+ 		
  		imagenDeFondo.removeAll();
  		for (int i=0;i<baraja.getBaraja().size();i++) {
  			imagenDeFondo.add(baraja.getBaraja().get(i));
@@ -141,19 +139,19 @@ public class Domino extends JFrame {
  		for (int i=0;i<jugador.getJuego().size();i++) {
  			imagenDeFondo.add(jugador.getJuego().get(i));
  		}
- 		establecerPosicionAlasFichas();
+ 		
  	}
 
  	public void organizarFichasParaComer(){
- 		int posicionInicialx = 850;
-		int posicionInicialy = 10;
+ 		int posicionInicialx = 880;
+		int posicionInicialy = 40;
 		int permutador = 0;
 		for (int i = 0; i < baraja.getBaraja().size()/2; i++) {
 			for (int cual = permutador; cual < permutador+baraja.getBaraja().size()/7; cual++) {
 				baraja.getBaraja().get(cual).setBounds(posicionInicialx, posicionInicialy, 43, 85);
 				posicionInicialx += 48;
 			}
-			posicionInicialx = 850;
+			posicionInicialx = 880;
 			permutador += 2;
 			posicionInicialy += 89;
 			}
@@ -163,21 +161,22 @@ public class Domino extends JFrame {
 		escogiendoFichaInicial = false;
 		repartir(jugador);
 		repartir(casa);
-		//taparFichas(casa);
-		//verFichas(jugador);
+		taparFichas(casa);
+		verFichas(jugador);
 		actualizar();
 		organizarFichasParaComer();
 
 	}
 	public void comer(Jugador quien, Ficha cual) {
 		if (estaEn(cual,baraja)) {
-		comiendo=true;
+		//comiendo=true;
 		cual.setBounds(200,555, 43, 85);
 		quien.getJuego().add(cual);
 		baraja.getBaraja().remove(cual);
 		cual.setBounds(200,555, 43, 85);
 		actualizar();
-		organizarFichasParaComer();
+	//	organizarFichasParaComer();
+		//comiendo=false;
 	}}
 	
 	public boolean estaEn(Ficha cual,Baraja baraj) {
@@ -215,12 +214,15 @@ public class Domino extends JFrame {
 				
 				}}
 		
+		taparFichas(casa);
+		taparMesa();
+		verFichas(jugador);
+		
 	}
 	public void taparFicha(Ficha cual) {
 				cual.setIcon(new ImageIcon("src/fichas/alr.png"));
 				cual.setDestapada(false);
 	}
-	
 	public void taparFichas(Jugador quien) {
 		for (int i=0;i<quien.getJuego().size();i++) {
 			taparFicha(quien.getJuego().get(i));
@@ -237,7 +239,11 @@ public class Domino extends JFrame {
 		}
 		
 }
-
+	public void taparMesa() {
+		for (int i=0;i<baraja.getBaraja().size();i++) {
+			taparFicha(baraja.getBaraja().get(i));
+		}
+	}
 	public void detenerSegudos(int segundos) {
 		try {
 			Thread.sleep(segundos*200);
@@ -278,15 +284,19 @@ public class Domino extends JFrame {
 					else JOptionPane.showMessageDialog(null, "INICIAS TU");
 					escogiendoFichaInicial=false;
 					iniciarPartida();
-					taparFicha(fichaJugador);
-					taparFicha(fichaCasa);
 					actualizar();
 					
 					
 				}
-				else comer(jugador,fichaJugador);
-				actualizar();
 				
+				else 
+				//	JOptionPane.showMessageDialog(null,"antes de comer"+baraja.getBaraja().size()+"   "+casa.getJuego().size()+"   "+jugador.getJuego().size());
+				if (!escogiendoFichaInicial) {
+				JOptionPane.showMessageDialog(null,""+fichaJugador.getLado1()+"  "+fichaJugador.getLado2());
+
+				comer(jugador,fichaJugador);
+				actualizar();
+				}
 			}
 		}
 
