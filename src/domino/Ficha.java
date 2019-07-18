@@ -17,7 +17,7 @@ public class Ficha extends JButton {
 		this.lado1 = lado1;
 		this.lado2 = lado2;
 		this.idFicha = (""+lado1+lado2);
-		//this.setIcon(new ImageIcon("src/fichas/" + lado1 + lado2 + ".png"));
+		this.setIcon(new ImageIcon("src/fichas/" + lado1 + lado2 + ".png"));
 	}
 
 	public void setDestapada(boolean destapada) {

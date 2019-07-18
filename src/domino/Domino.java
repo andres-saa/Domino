@@ -62,13 +62,14 @@ public class Domino extends JFrame {
 	}
 
 	private void initGUI() {
-	
+
 		crearMesa();
 		this.getContentPane().add(panel);
 		panel.setLayout(null);
 	}
 
 	public void crearMesa() {
+
 		revolverMesa();
 		escucharMouse= new Escucha();
 		imagenDeFondo.setBounds(0, 0, 1280, 720);
@@ -79,19 +80,23 @@ public class Domino extends JFrame {
 			imagenDeFondo.add(baraja.getBaraja().get(cual));
 		}
 		for (int cual = 0; cual < baraja.getBaraja().size(); cual++) {
-			taparFicha(baraja.getBaraja().get(cual));
+		//	taparFicha(baraja.getBaraja().get(cual));
 		}
 		
 		establecerPosicionAlasFichas();
 	}
 
 	public void revolverMesa() {
+
 		Baraja barajaAuxiliar=new Baraja();
+		for (int i=0;i<barajaAuxiliar.getBaraja().size();i++)
+			barajaAuxiliar.getBaraja().remove(i);
 		
 		for (int i=0;i<baraja.getBaraja().size();i++ ){
 			int cual = aleatorio.nextInt(baraja.getBaraja().size());
 			barajaAuxiliar.getBaraja().add(baraja.getBaraja().get(cual));
 			baraja.getBaraja().remove(cual);
+
 		}
 		
 		//ArrayList<Ficha> barajaAuxiliar=new ArrayList<Ficha>();
@@ -101,6 +106,7 @@ public class Domino extends JFrame {
 			baraja.getBaraja().add(barajaAuxiliar.getBaraja().get(cual));
 			barajaAuxiliar.getBaraja().remove(cual);
 		}
+
 	}
 
  	public void establecerPosicionAlasFichas() {
@@ -140,10 +146,10 @@ public class Domino extends JFrame {
 
  	public void organizarFichasParaComer(){
  		int posicionInicialx = 850;
-		int posicionInicialy = 42;
+		int posicionInicialy = 10;
 		int permutador = 0;
-		for (int i = 0; i < 6; i++) {
-			for (int cual = permutador; cual < permutador + 3; cual++) {
+		for (int i = 0; i < baraja.getBaraja().size()/2; i++) {
+			for (int cual = permutador; cual < permutador+baraja.getBaraja().size()/7; cual++) {
 				baraja.getBaraja().get(cual).setBounds(posicionInicialx, posicionInicialy, 43, 85);
 				posicionInicialx += 48;
 			}
@@ -157,8 +163,8 @@ public class Domino extends JFrame {
 		escogiendoFichaInicial = false;
 		repartir(jugador);
 		repartir(casa);
-		taparFichas(casa);
-		verFichas(jugador);
+		//taparFichas(casa);
+		//verFichas(jugador);
 		actualizar();
 		organizarFichasParaComer();
 
@@ -171,6 +177,7 @@ public class Domino extends JFrame {
 		baraja.getBaraja().remove(cual);
 		cual.setBounds(200,555, 43, 85);
 		actualizar();
+		organizarFichasParaComer();
 	}}
 	
 	public boolean estaEn(Ficha cual,Baraja baraj) {
@@ -187,10 +194,10 @@ public class Domino extends JFrame {
 		int inicial = 132;
 		
 		if (player == jugador) {
-			int cual;
+			
 			
 			for (int i = 0; i < 7; i++) {
-				cual=aleatorio.nextInt(baraja.getBaraja().size());
+				int cual=aleatorio.nextInt(baraja.getBaraja().size());
 				baraja.getBaraja().get(cual).setBounds(inicial, 613, 42, 85);
 				inicial += 46;
 				jugador.getJuego().add(baraja.getBaraja().get(cual));
@@ -198,9 +205,9 @@ public class Domino extends JFrame {
 				
 			}
 		} else if (player == casa) {
-			int cual;
+			
 			for (int i = 0; i < 7; i++) {
-				cual = aleatorio.nextInt(baraja.getBaraja().size());
+				int	cual = aleatorio.nextInt(baraja.getBaraja().size());
 				baraja.getBaraja().get(cual).setBounds(inicial, 21, 42, 85);
 				inicial += 46;
 				casa.getJuego().add(baraja.getBaraja().get(cual));
@@ -251,6 +258,7 @@ public class Domino extends JFrame {
 
 				Ficha fichaJugador = (Ficha) e.getSource();
 				
+
 				if (escogiendoFichaInicial) {
 
 					// panel.repaint();
