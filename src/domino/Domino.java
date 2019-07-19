@@ -328,13 +328,15 @@ public class Domino extends JFrame {
 			if (mesa.isEmpty() && lado == "centro") {
 				if (cual.getLado1() != cual.getLado2()) {
 					rotar(cual, "izq");
-					cual.setBounds(450, 300, cual.getBounds().width, cual.getBounds().height);
+					cual.setBounds(500, 310, cual.getBounds().width, cual.getBounds().height);
+					
+					
 					ultimaFichaIzq = cual;
 					ultimaFichaDer = cual;
 					ultimaFichaIzqLadoLibre = cual.getLado2();
 					ultimaFichaDerLadoLibre = cual.getLado1();
 				} else if (cual.getLado1() == cual.getLado2()) {
-					cual.setBounds(450, 300, cual.getBounds().width, cual.getBounds().height);
+					cual.setBounds(515, 310, cual.getBounds().width, cual.getBounds().height);
 					ultimaFichaIzq = cual;
 					ultimaFichaDer = cual;
 					ultimaFichaIzqLadoLibre = cual.getLado1();
@@ -394,6 +396,7 @@ public class Domino extends JFrame {
 						else if (cual.getLado2() == ultimaFichaIzqLadoLibre)
 							ultimaFichaIzqLadoLibre = cual.getLado1();
 					}
+					
 
 				} else {
 
@@ -432,12 +435,12 @@ public class Domino extends JFrame {
 							&& cual.getLado1() != cual.getLado2()) {
 
 						if (cual.getLado1() == ultimaFichaDerLadoLibre)
-							rotar(cual, "ider");
+							rotar(cual, "der");
 						else if (cual.getLado2() == ultimaFichaDerLadoLibre)
 							rotar(cual, "izq");
 
 						cual.setBounds(ultimaFichaDer.getBounds().x + (cual.getBounds().width + 1),
-								ultimaFichaDer.getBounds().y, cual.getBounds().height, cual.getBounds().width);
+								ultimaFichaDer.getBounds().y, cual.getBounds().width, cual.getBounds().height);
 						ultimaFichaDer = cual;
 
 						if (cual.getLado1() == ultimaFichaDerLadoLibre)
@@ -449,6 +452,7 @@ public class Domino extends JFrame {
 					
 					if (ultimaFichaDer.getBounds().width == cual.getBounds().height
 							&& cual.getLado1() == cual.getLado2()) {
+
 
 						cual.setBounds(ultimaFichaDer.getBounds().x + (cual.getBounds().height + 1),
 								ultimaFichaDer.getBounds().y - 20, cual.getBounds().width, cual.getBounds().height);
