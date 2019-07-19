@@ -51,7 +51,9 @@ public class Domino extends JFrame {
 	int colocarComidaxcasa = 46;
 	Jugador turno =new Jugador(null);
 	Ficha ultimaFichaIzq;
-	Ficha ultimaFichaDer=new Ficha(0,0);
+	Ficha ultimaFichaDer;
+	int ultimaFichaIzqLadoLibre;
+	int ultimaFichaDerLadoLibre;
 
 	// private BufferedImage bufferFondo = null;
 	// private JLabel centralLabel;
@@ -165,7 +167,7 @@ public class Domino extends JFrame {
 			cual.setIcon(new ImageIcon("src/fichasLeft/" + cual.getLado1() + cual.getLado2() + ".png"));
 		}
 		if (orientacion == "der") {
-			cual.setIcon(new ImageIcon("src/fichasRight/" + cual.getLado1() + cual.getLado2() + ".png"));
+			cual.setIcon(new ImageIcon("src/fichasRight/"+ cual.getLado1() + cual.getLado2() + ".png"));
 		}
 		actualizar();
 	}
@@ -188,15 +190,15 @@ public class Domino extends JFrame {
 
 	}
 	public void organizarFichasParaComer() {
-		int posicionInicialx = 880;
-		int posicionInicialy = 40;
+		int posicionInicialx = 1085;
+		int posicionInicialy = 25;
 		int permutador = 0;
 		for (int i = 0; i < baraja.getBaraja().size() / 2; i++) {
 			for (int cual = permutador; cual < permutador + baraja.getBaraja().size() / 7; cual++) {
 				baraja.getBaraja().get(cual).setBounds(posicionInicialx, posicionInicialy, 43, 85);
 				posicionInicialx += 48;
 			}
-			posicionInicialx = 880;
+			posicionInicialx = 1085;
 			permutador += 2;
 			posicionInicialy += 89;
 		}
@@ -317,80 +319,166 @@ public class Domino extends JFrame {
 
 	public void jugar(Jugador quien, Ficha cual, String lado) {
 
-		//si estamos empezando
+		String mensaje = null;
+		// si estamos empezando
 		if (estaEn(cual, quien.getJuego()) == true && turno == quien) {
 			actualizar();
 			if (mesa.isEmpty())
-				lado="centro";
-			if (mesa.isEmpty()&& lado== "centro") {
+				lado = "centro";
+			if (mesa.isEmpty() && lado == "centro") {
 				if (cual.getLado1() != cual.getLado2()) {
 					rotar(cual, "izq");
 					cual.setBounds(450, 300, cual.getBounds().width, cual.getBounds().height);
 					ultimaFichaIzq = cual;
 					ultimaFichaDer = cual;
-				}
-				else if (cual.getLado1() == cual.getLado2()){
-				cual.setBounds(450, 300, cual.getBounds().width, cual.getBounds().height);
-				ultimaFichaIzq = cual;
-				ultimaFichaDer = cual;
+					ultimaFichaIzqLadoLibre = cual.getLado2();
+					ultimaFichaDerLadoLibre = cual.getLado1();
+				} else if (cual.getLado1() == cual.getLado2()) {
+					cual.setBounds(450, 300, cual.getBounds().width, cual.getBounds().height);
+					ultimaFichaIzq = cual;
+					ultimaFichaDer = cual;
+					ultimaFichaIzqLadoLibre = cual.getLado1();
+					ultimaFichaDerLadoLibre = cual.getLado1();
 				}
 			}
-			
 
-			//jugar por la izquierda
+			// jugar por la izquierda
 			if (lado == "izq") {
-				if (ultimaFichaIzq.getBounds().width == cual.getBounds().width) {
-					rotar(cual, "izq");
-					cual.setBounds(ultimaFichaIzq.getBounds().x-(cual.getBounds().width+1),ultimaFichaIzq.getBounds().y + 21, cual.getBounds().width,
-							cual.getBounds().height);
-					ultimaFichaIzq = cual;
-					
-					
-				} else if (ultimaFichaIzq.getBounds().width == cual.getBounds().height
-						&& cual.getLado1() != cual.getLado2()) {
-					rotar(cual, "izq");
-					cual.setBounds(ultimaFichaIzq.getBounds().x - (cual.getBounds().width + 1),
-							ultimaFichaIzq.getBounds().y, cual.getBounds().width, cual.getBounds().height);
-					ultimaFichaIzq = cual;
-					
-					
-				} else if (ultimaFichaIzq.getBounds().width == cual.getBounds().height && cual.getLado1() == cual.getLado2()) {
-					cual.setBounds(ultimaFichaIzq.getBounds().x - (cual.getBounds().width + 1),
-							ultimaFichaIzq.getBounds().y-20, cual.getBounds().width, cual.getBounds().height);
-					ultimaFichaIzq = cual;
+
+				if (cual.getLado1() == ultimaFichaIzqLadoLibre || cual.getLado2() == ultimaFichaIzqLadoLibre) {
+
+					if (ultimaFichaIzq.getBounds().width == cual.getBounds().width) {
+
+						if (cual.getLado1() == ultimaFichaIzqLadoLibre)
+							rotar(cual, "izq");
+						else if (cual.getLado2() == ultimaFichaIzqLadoLibre)
+							rotar(cual, "der");
+
+						cual.setBounds(ultimaFichaIzq.getBounds().x - (cual.getBounds().width + 1),
+								ultimaFichaIzq.getBounds().y + 21, cual.getBounds().width, cual.getBounds().height);
+						ultimaFichaIzq = cual;
+
+						if (cual.getLado1() == ultimaFichaIzqLadoLibre)
+							ultimaFichaIzqLadoLibre = cual.getLado2();
+						else if (cual.getLado2() == ultimaFichaIzqLadoLibre)
+							ultimaFichaIzqLadoLibre = cual.getLado1();
+
+					}
+					if (ultimaFichaIzq.getBounds().width == cual.getBounds().height
+							&& cual.getLado1() != cual.getLado2()) {
+
+						if (cual.getLado1() == ultimaFichaIzqLadoLibre)
+							rotar(cual, "izq");
+						else if (cual.getLado2() == ultimaFichaIzqLadoLibre)
+							rotar(cual, "der");
+
+						cual.setBounds(ultimaFichaIzq.getBounds().x - (cual.getBounds().width + 1),
+								ultimaFichaIzq.getBounds().y, cual.getBounds().width, cual.getBounds().height);
+						ultimaFichaIzq = cual;
+
+						if (cual.getLado1() == ultimaFichaIzqLadoLibre)
+							ultimaFichaIzqLadoLibre = cual.getLado2();
+						else if (cual.getLado2() == ultimaFichaIzqLadoLibre)
+							ultimaFichaIzqLadoLibre = cual.getLado1();
+
+					}
+					if (ultimaFichaIzq.getBounds().width == cual.getBounds().height
+							&& cual.getLado1() == cual.getLado2()) {
+
+						cual.setBounds(ultimaFichaIzq.getBounds().x - (cual.getBounds().width + 1),
+								ultimaFichaIzq.getBounds().y - 20, cual.getBounds().width, cual.getBounds().height);
+						ultimaFichaIzq = cual;
+
+						if (cual.getLado1() == ultimaFichaIzqLadoLibre)
+							ultimaFichaIzqLadoLibre = cual.getLado2();
+						else if (cual.getLado2() == ultimaFichaIzqLadoLibre)
+							ultimaFichaIzqLadoLibre = cual.getLado1();
+					}
+
+				} else {
+
+					JOptionPane.showMessageDialog(null, "no puese jugar esa ficha por la izquierda");
+					mensaje = "no puese jugar esa ficha por la izquierda";
+
 				}
+
 			}
-			//jugarPorLa derecha
+
+			// jugarPorLa derecha
 
 			if (lado == "der") {
-				if (ultimaFichaDer.getBounds().width == cual.getBounds().width) {
-					rotar(cual, "izq");
-					cual.setBounds(ultimaFichaDer.getBounds().x+(cual.getBounds().height+1),ultimaFichaDer.getBounds().y + 21, cual.getBounds().width,
-							cual.getBounds().height);
-					ultimaFichaDer = cual;
+				if (cual.getLado1() == ultimaFichaDerLadoLibre || cual.getLado2() == ultimaFichaDerLadoLibre) {
+
+					// si las fichas tienen la misma orientacion
+
+					if (ultimaFichaDer.getBounds().width == cual.getBounds().width) {
+
+						if (cual.getLado1() == ultimaFichaDerLadoLibre)
+							rotar(cual, "der");
+						else if (cual.getLado2() == ultimaFichaDerLadoLibre)
+							rotar(cual, "izq");
+
+						cual.setBounds(ultimaFichaDer.getBounds().x + (cual.getBounds().height + 1),
+								ultimaFichaDer.getBounds().y + 21, cual.getBounds().width, cual.getBounds().height);
+						ultimaFichaDer = cual;
+
+						if (cual.getLado1() == ultimaFichaDerLadoLibre)
+							ultimaFichaDerLadoLibre = cual.getLado2();
+						else if (cual.getLado2() == ultimaFichaDerLadoLibre)
+							ultimaFichaDerLadoLibre = cual.getLado1();
+
+					}
+					if (ultimaFichaDer.getBounds().width == cual.getBounds().height
+							&& cual.getLado1() != cual.getLado2()) {
+
+						if (cual.getLado1() == ultimaFichaDerLadoLibre)
+							rotar(cual, "ider");
+						else if (cual.getLado2() == ultimaFichaDerLadoLibre)
+							rotar(cual, "izq");
+
+						cual.setBounds(ultimaFichaDer.getBounds().x + (cual.getBounds().width + 1),
+								ultimaFichaDer.getBounds().y, cual.getBounds().height, cual.getBounds().width);
+						ultimaFichaDer = cual;
+
+						if (cual.getLado1() == ultimaFichaDerLadoLibre)
+							ultimaFichaDerLadoLibre = cual.getLado2();
+						else if (cual.getLado2() == ultimaFichaDerLadoLibre)
+							ultimaFichaDerLadoLibre = cual.getLado1();
+
+					}
 					
-					
-				} else if (ultimaFichaDer.getBounds().width == cual.getBounds().height
-						&& cual.getLado1() != cual.getLado2()) {
-					rotar(cual, "izq");
-					cual.setBounds(ultimaFichaDer.getBounds().x + (cual.getBounds().width + 1),
-							ultimaFichaDer.getBounds().y, cual.getBounds().width, cual.getBounds().height);
-					ultimaFichaDer = cual;
-					
-					
-				} else if (ultimaFichaDer.getBounds().width == cual.getBounds().height && cual.getLado1() == cual.getLado2()) {
-					cual.setBounds(ultimaFichaDer.getBounds().x + (cual.getBounds().height + 1),
-							ultimaFichaDer.getBounds().y-20, cual.getBounds().width, cual.getBounds().height);
-					ultimaFichaDer = cual;
+					if (ultimaFichaDer.getBounds().width == cual.getBounds().height
+							&& cual.getLado1() == cual.getLado2()) {
+
+						cual.setBounds(ultimaFichaDer.getBounds().x + (cual.getBounds().height + 1),
+								ultimaFichaDer.getBounds().y - 20, cual.getBounds().width, cual.getBounds().height);
+						ultimaFichaDer = cual;
+
+						if (cual.getLado1() == ultimaFichaDerLadoLibre)
+							ultimaFichaDerLadoLibre = cual.getLado2();
+						else if (cual.getLado2() == ultimaFichaDerLadoLibre)
+							ultimaFichaDerLadoLibre = cual.getLado1();
+					}
+
+				} else {
+
+					JOptionPane.showMessageDialog(null, "no puese jugar esa ficha por la derecha");
+					mensaje = "no puese jugar esa ficha por la derecha";
+
 				}
+
 			}
-
 		}
+		
 
+		if (mensaje!="no puese jugar esa ficha por la izquierda"&& mensaje!="no puese jugar esa ficha por la derecha") {
 		mesa.add(cual);
 		quien.getJuego().remove(cual);
 		organizar(quien);
 		actualizar();
+		}
+		
+		
 	}
 	
 	private class Escucha implements MouseListener {
