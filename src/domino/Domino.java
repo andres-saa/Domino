@@ -50,7 +50,8 @@ public class Domino extends JFrame {
 	int colocarComidaxjugador = 46;
 	int colocarComidaxcasa = 46;
 	Jugador turno =new Jugador(null);
-	int ladoEnJugegoIzq,ladoEnJugegoDer;
+	Ficha ultimaFichaIzq;
+	Ficha ultimaFichaDer=new Ficha(0,0);
 
 	// private BufferedImage bufferFondo = null;
 	// private JLabel centralLabel;
@@ -314,29 +315,83 @@ public class Domino extends JFrame {
 		}
 	}
 
-	public void jugar(Jugador quien, Ficha cual) {
+	public void jugar(Jugador quien, Ficha cual, String lado) {
 
+		//si estamos empezando
 		if (estaEn(cual, quien.getJuego()) == true && turno == quien) {
-			if (mesa.isEmpty()) {
+			actualizar();
+			if (mesa.isEmpty())
+				lado="centro";
+			if (mesa.isEmpty()&& lado== "centro") {
 				if (cual.getLado1() != cual.getLado2()) {
 					rotar(cual, "izq");
 					cual.setBounds(450, 300, cual.getBounds().width, cual.getBounds().height);
+					ultimaFichaIzq = cual;
+					ultimaFichaDer = cual;
 				}
+				else if (cual.getLado1() == cual.getLado2()){
 				cual.setBounds(450, 300, cual.getBounds().width, cual.getBounds().height);
-			} else if (cual.getLado1() == cual.getLado2()) {
-				cual.setBounds(450, 300, 43, 85);
-			} else if (cual.getLado1() != cual.getLado2()) {
-				rotar(cual, "izq");
-				cual.setBounds(450, 300, cual.getBounds().width, cual.getBounds().height);
-
+				ultimaFichaIzq = cual;
+				ultimaFichaDer = cual;
+				}
 			}
-		
+			
+
+			//jugar por la izquierda
+			if (lado == "izq") {
+				if (ultimaFichaIzq.getBounds().width == cual.getBounds().width) {
+					rotar(cual, "izq");
+					cual.setBounds(ultimaFichaIzq.getBounds().x-(cual.getBounds().width+1),ultimaFichaIzq.getBounds().y + 21, cual.getBounds().width,
+							cual.getBounds().height);
+					ultimaFichaIzq = cual;
+					
+					
+				} else if (ultimaFichaIzq.getBounds().width == cual.getBounds().height
+						&& cual.getLado1() != cual.getLado2()) {
+					rotar(cual, "izq");
+					cual.setBounds(ultimaFichaIzq.getBounds().x - (cual.getBounds().width + 1),
+							ultimaFichaIzq.getBounds().y, cual.getBounds().width, cual.getBounds().height);
+					ultimaFichaIzq = cual;
+					
+					
+				} else if (ultimaFichaIzq.getBounds().width == cual.getBounds().height && cual.getLado1() == cual.getLado2()) {
+					cual.setBounds(ultimaFichaIzq.getBounds().x - (cual.getBounds().width + 1),
+							ultimaFichaIzq.getBounds().y-20, cual.getBounds().width, cual.getBounds().height);
+					ultimaFichaIzq = cual;
+				}
+			}
+			//jugarPorLa derecha
+
+			if (lado == "der") {
+				if (ultimaFichaDer.getBounds().width == cual.getBounds().width) {
+					rotar(cual, "izq");
+					cual.setBounds(ultimaFichaDer.getBounds().x+(cual.getBounds().height+1),ultimaFichaDer.getBounds().y + 21, cual.getBounds().width,
+							cual.getBounds().height);
+					ultimaFichaDer = cual;
+					
+					
+				} else if (ultimaFichaDer.getBounds().width == cual.getBounds().height
+						&& cual.getLado1() != cual.getLado2()) {
+					rotar(cual, "izq");
+					cual.setBounds(ultimaFichaDer.getBounds().x + (cual.getBounds().width + 1),
+							ultimaFichaDer.getBounds().y, cual.getBounds().width, cual.getBounds().height);
+					ultimaFichaDer = cual;
+					
+					
+				} else if (ultimaFichaDer.getBounds().width == cual.getBounds().height && cual.getLado1() == cual.getLado2()) {
+					cual.setBounds(ultimaFichaDer.getBounds().x + (cual.getBounds().height + 1),
+							ultimaFichaDer.getBounds().y-20, cual.getBounds().width, cual.getBounds().height);
+					ultimaFichaDer = cual;
+				}
+			}
+
+		}
+
 		mesa.add(cual);
 		quien.getJuego().remove(cual);
 		organizar(quien);
-		}
+		actualizar();
 	}
-	
 	
 	private class Escucha implements MouseListener {
 		@Override
@@ -364,7 +419,7 @@ public class Domino extends JFrame {
 					verFicha(fichaCasa);
 					if (fichaCasa.getValor() > fichaJugador.getValor()) {
 						JOptionPane.showMessageDialog(null, "INICIA LA CASA");
-						turno=casa;
+						turno=jugador;
 					}
 					else {
 						JOptionPane.showMessageDialog(null, "INICIAS TU");
@@ -377,10 +432,17 @@ public class Domino extends JFrame {
 				}
 
 				else if (turno==jugador) {
-					jugar(jugador, fichaJugador);
+					jugar(jugador, fichaJugador,"izq");
 				actualizar();
 				
 				}
+			}
+			
+			if (e.getButton() == 3 && !escogiendoFichaInicial) {
+
+				Ficha fichaJugador = (Ficha) e.getSource();
+				jugar(jugador, fichaJugador,"der");
+				
 			}
 		}
 		@Override
