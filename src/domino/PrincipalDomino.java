@@ -9,7 +9,8 @@ public class PrincipalDomino {
 		try {
 			String className = UIManager.getCrossPlatformLookAndFeelClassName();
 			UIManager.setLookAndFeel(className);
-		} catch (Exception e) {}
+		} catch (Exception e) {
+		}
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
