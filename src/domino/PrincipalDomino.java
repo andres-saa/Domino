@@ -10,8 +10,7 @@ public class PrincipalDomino {
 			String className = UIManager.getCrossPlatformLookAndFeelClassName();
 			UIManager.setLookAndFeel(className);
 		} catch (Exception e) {
-		}
-		
+		}	
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				Domino myWIndow = new Domino();
