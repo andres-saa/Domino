@@ -27,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import java.applet.AudioClip;
+import java.util.TimeZone;;
 
 public class Domino extends JFrame {
 
@@ -40,21 +41,13 @@ public class Domino extends JFrame {
 	Baraja baraja = new Baraja();
 	JLabel imagenDeFondo = new JLabel(new ImageIcon("src/imagenes/fondo.jpg"));
 	boolean escogiendoFichaInicial = true;
-	boolean puedeComerJugador = false;
-	boolean puedeComerCasa = false;
-	boolean puedeJugarJugador = false;
-	boolean puedeJugarCasa = false;
-	boolean comiendo = false;
 	ArrayList<Ficha> mesa = new ArrayList<Ficha>();
 	JPanel panel = new JPanel();
-	int colocarComidaxjugador = 46;
-	int colocarComidaxcasa = 46;
-	Jugador turno =new Jugador(null);
+	Jugador turno = new Jugador(null);
 	Ficha ultimaFichaIzq;
 	Ficha ultimaFichaDer;
 	int ultimaFichaIzqLadoLibre;
 	int ultimaFichaDerLadoLibre;
-
 	// private BufferedImage bufferFondo = null;
 	// private JLabel centralLabel;
 
@@ -78,7 +71,7 @@ public class Domino extends JFrame {
 		}
 	}
 
-		private void initGUI() {
+	private void initGUI() {
 
 		crearMesa();
 		this.getContentPane().add(panel);
@@ -102,6 +95,7 @@ public class Domino extends JFrame {
 		establecerPosicionAlasFichas();
 
 	}
+
 	public void revolverMesa() {
 
 		Baraja barajaAuxiliar = new Baraja();
@@ -123,6 +117,7 @@ public class Domino extends JFrame {
 		}
 
 	}
+
 	public void organizar(Jugador quien) {
 
 		int inicialjugador = 132;
@@ -143,6 +138,7 @@ public class Domino extends JFrame {
 		}
 
 	}
+
 	public void establecerPosicionAlasFichas() {
 
 		int posicionInicialx = 200;
@@ -152,8 +148,6 @@ public class Domino extends JFrame {
 			for (int cual = permutador; cual < permutador + 7; cual++) {
 				baraja.getBaraja().get(cual).setBounds(posicionInicialx, posicionInicialy, 43, 85);
 				posicionInicialx += 48;
-				baraja.getBaraja().get(cual).setPosx(posicionInicialx);
-				baraja.getBaraja().get(cual).setPosy(posicionInicialy);
 			}
 			posicionInicialx = 200;
 			permutador += 7;
@@ -161,16 +155,20 @@ public class Domino extends JFrame {
 		}
 
 	}
+
 	public void rotar(Ficha cual, String orientacion) {
-		cual.setBounds(cual.getBounds().x, cual.getBounds().y, cual.getBounds().height,cual.getBounds().width);
+		cual.setBounds(cual.getBounds().x, cual.getBounds().y, cual.getBounds().height, cual.getBounds().width);
 		if (orientacion == "izq") {
 			cual.setIcon(new ImageIcon("src/fichasLeft/" + cual.getLado1() + cual.getLado2() + ".png"));
+			cual.setRotadaHacia("izq");
 		}
 		if (orientacion == "der") {
-			cual.setIcon(new ImageIcon("src/fichasRight/"+ cual.getLado1() + cual.getLado2() + ".png"));
+			cual.setIcon(new ImageIcon("src/fichasRight/" + cual.getLado1() + cual.getLado2() + ".png"));
+			cual.setRotadaHacia("der");
 		}
 		actualizar();
 	}
+
 	public void actualizar() {
 
 		imagenDeFondo.removeAll();
@@ -189,6 +187,7 @@ public class Domino extends JFrame {
 		}
 
 	}
+
 	public void organizarFichasParaComer() {
 		int posicionInicialx = 1085;
 		int posicionInicialy = 25;
@@ -207,45 +206,75 @@ public class Domino extends JFrame {
 
 	public void iniciarPartida() {
 		escogiendoFichaInicial = false;
-		repartir(jugador);
-		repartir(casa);
+
 		taparFichas(casa);
 		verFichas(jugador);
 		actualizar();
 		organizarFichasParaComer();
-		
+
+	}
+
+	public void extrategiaDeLaCasa() {
+
+		actualizar();
+		while (turno == casa) {
+
+			if (puedeJugar(casa, "izq")) {
+				if (fichaQueCasaPuedeJugar("izq") != null) {
+					jugar(casa, fichaQueCasaPuedeJugar("izq"), "izq");
+					turno = jugador;
+				}
+			} else if (puedeJugar(casa, "der")) {
+				if (fichaQueCasaPuedeJugar("der") != null) {
+					jugar(casa, fichaQueCasaPuedeJugar("der"), "der");
+					turno = jugador;
+				}
+			} else if (puedeComer(casa)) {
+				comer(casa, baraja.getBaraja().get(baraja.getBaraja().size() - 1));
+				extrategiaDeLaCasa();
+			} else
+				turno = jugador;
+		}
+		detenerSegundos(2);
+		actualizar();
+		if (casa.getJuego().isEmpty() && !mesa.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "MESA GANA!");
+		}
 
 	}
 
 	public void comer(Jugador quien, Ficha cual) {
 
-		if (estaEn(cual, baraja.getBaraja()) && turno==quien) {
-			cual.setBounds(200, 555, 43, 85);
-			quien.getJuego().add(cual);
-			baraja.getBaraja().remove(cual);
 
 			if (quien == jugador) {
-				cual.setBounds(jugador.getJuego().get(6).getBounds().x + colocarComidaxjugador,
-						jugador.getJuego().get(6).getBounds().y, 43, 85);
-				verFicha(cual);
-				colocarComidaxjugador += 46;
-				organizar(jugador);
-			} else if (quien == casa) {
-				cual.setBounds(casa.getJuego().get(6).getBounds().x + colocarComidaxcasa,
-						casa.getJuego().get(6).getBounds().y, 43, 85);
-				colocarComidaxcasa += 46;
-				organizar(casa);
-			}
+				if (puedeComer(jugador) && !baraja.getBaraja().isEmpty()&& mesa.size()>1  && estaEn(cual,baraja.getBaraja())) {
+					
+					cual.setBounds(jugador.getJuego().get(jugador.getJuego().size() - 1).getBounds().x + 46,
+							jugador.getJuego().get(jugador.getJuego().size() - 1).getBounds().y, 43, 85);
+					quien.getJuego().add(cual);
+					baraja.getBaraja().remove(cual);
+					organizar(jugador);
+					
+					actualizar();
 
-			// cual.getBounds();
-			actualizar();
-			// organizarFichasParaComer();
-			// comiendo=false;
-		}
+				}
+				verFicha(cual);
+			} else if (quien == casa) {
+				if (puedeComer(casa) && !baraja.getBaraja().isEmpty() && mesa.size()>1 && estaEn(cual,baraja.getBaraja())) {
+					cual.setBounds(casa.getJuego().get(casa.getJuego().size() - 1).getBounds().x + 46,
+							casa.getJuego().get(jugador.getJuego().size() - 1).getBounds().y, 43, 85);
+					
+					quien.getJuego().add(cual);
+					baraja.getBaraja().remove(cual);
+					
+					organizar(casa);
+					actualizar();
+				}
+			}
 	}
 
 	public boolean estaEn(Ficha cual, ArrayList<Ficha> donde) {
-		boolean veredicto=donde.contains(cual);
+		boolean veredicto = donde.contains(cual);
 		return veredicto;
 	}
 
@@ -278,7 +307,40 @@ public class Domino extends JFrame {
 
 	}
 
+	public Ficha fichaQueCasaPuedeJugar(String lado) {
+		Ficha cual = null;
+
+		if (lado == "izq") {
+
+			for (int i = 0; i < casa.getJuego().size(); i++) {
+
+				if (casa.getJuego().get(i).getLado1() == ultimaFichaIzqLadoLibre
+						|| casa.getJuego().get(i).getLado2() == ultimaFichaIzqLadoLibre) {
+					cual = casa.getJuego().get(i);
+					break;
+				}
+
+			}
+		}
+
+		if (lado == "der") {
+
+			for (int i = 0; i < casa.getJuego().size(); i++) {
+
+				if (casa.getJuego().get(i).getLado1() == ultimaFichaDerLadoLibre
+						|| casa.getJuego().get(i).getLado2() == ultimaFichaDerLadoLibre) {
+					cual = casa.getJuego().get(i);
+					break;
+				}
+
+			}
+		}
+
+		return cual;
+	}
+
 	public void taparFicha(Ficha cual) {
+
 		cual.setIcon(new ImageIcon("src/fichas/alr.png"));
 		cual.setDestapada(false);
 	}
@@ -289,10 +351,65 @@ public class Domino extends JFrame {
 		}
 	}
 
+	public boolean puedeComer(Jugador quien) {
+		boolean veredicto = true;
+		if (turno == quien && mesa.size()>1) {
+			for (int i = 0; i < quien.getJuego().size(); i++) {
+
+				if      (  quien.getJuego().get(i).getLado1() == ultimaFichaIzqLadoLibre
+						|| quien.getJuego().get(i).getLado2() == ultimaFichaIzqLadoLibre
+						|| quien.getJuego().get(i).getLado1() == ultimaFichaDerLadoLibre
+						|| quien.getJuego().get(i).getLado2() == ultimaFichaDerLadoLibre) {
+					
+					veredicto = false;
+				}
+			}
+		} 
+		return veredicto;
+	}
+
 	public void verFicha(Ficha cual) {
-		cual.setIcon(new ImageIcon("src/fichas/" + cual.getLado1() + cual.getLado2() + ".png"));
+
+		if (cual.getRotadaHacia() == "der") {
+
+			cual.setIcon(new ImageIcon("src/fichasRight/" + cual.getLado1() + cual.getLado2() + ".png"));
+			cual.setDestapada(true);
+		} else if (cual.getRotadaHacia() == "izq") {
+
+			cual.setIcon(new ImageIcon("src/fichasLeft/" + cual.getLado1() + cual.getLado2() + ".png"));
+			cual.setDestapada(true);
+		} else
+			cual.setIcon(new ImageIcon("src/fichas/" + cual.getLado1() + cual.getLado2() + ".png"));
 		cual.setDestapada(true);
 
+	}
+
+	public boolean puedeJugar(Jugador quien, String lado) {
+		boolean veredicto = false;
+
+		if (turno == quien) {
+			if (lado == "izq") {
+				for (int i = 0; i < quien.getJuego().size(); i++) {
+					if (quien.getJuego().get(i).getLado1() == ultimaFichaIzqLadoLibre
+							|| quien.getJuego().get(i).getLado2() == ultimaFichaIzqLadoLibre || mesa.isEmpty()) {
+						veredicto = true;
+					}
+				}
+			}
+
+			if (lado == "der") {
+				for (int i = 0; i < quien.getJuego().size(); i++) {
+					if (quien.getJuego().get(i).getLado1() == ultimaFichaDerLadoLibre
+							|| quien.getJuego().get(i).getLado2() == ultimaFichaDerLadoLibre || mesa.isEmpty()) {
+						veredicto = true;
+					}
+				}
+			}
+		} else {
+			veredicto = false;
+		}
+
+		return veredicto;
 	}
 
 	public void verFichas(Jugador quien) {
@@ -308,13 +425,8 @@ public class Domino extends JFrame {
 		}
 	}
 
-	public void detenerSegudos(int segundos) {
-		try {
-			Thread.sleep(segundos * 200);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+	public void detenerSegundos(int segundos) {
+
 	}
 
 	public void jugar(Jugador quien, Ficha cual, String lado) {
@@ -329,8 +441,7 @@ public class Domino extends JFrame {
 				if (cual.getLado1() != cual.getLado2()) {
 					rotar(cual, "izq");
 					cual.setBounds(500, 310, cual.getBounds().width, cual.getBounds().height);
-					
-					
+
 					ultimaFichaIzq = cual;
 					ultimaFichaDer = cual;
 					ultimaFichaIzqLadoLibre = cual.getLado2();
@@ -396,16 +507,12 @@ public class Domino extends JFrame {
 						else if (cual.getLado2() == ultimaFichaIzqLadoLibre)
 							ultimaFichaIzqLadoLibre = cual.getLado1();
 					}
-					
 
-				} else {
-
-					JOptionPane.showMessageDialog(null, "no puese jugar esa ficha por la izquierda");
-					mensaje = "no puese jugar esa ficha por la izquierda";
-
-				}
-
+				} else if (quien == jugador) {
+				JOptionPane.showMessageDialog(null, "no puese jugar esa ficha por la izquierda");
+				mensaje = "no puese jugar esa ficha por la izquierda";
 			}
+		}
 
 			// jugarPorLa derecha
 
@@ -449,10 +556,9 @@ public class Domino extends JFrame {
 							ultimaFichaDerLadoLibre = cual.getLado1();
 
 					}
-					
+
 					if (ultimaFichaDer.getBounds().width == cual.getBounds().height
 							&& cual.getLado1() == cual.getLado2()) {
-
 
 						cual.setBounds(ultimaFichaDer.getBounds().x + (cual.getBounds().height + 1),
 								ultimaFichaDer.getBounds().y - 20, cual.getBounds().width, cual.getBounds().height);
@@ -464,27 +570,33 @@ public class Domino extends JFrame {
 							ultimaFichaDerLadoLibre = cual.getLado1();
 					}
 
-				} else {
-
-					JOptionPane.showMessageDialog(null, "no puese jugar esa ficha por la derecha");
-					mensaje = "no puese jugar esa ficha por la derecha";
-
-				}
-
+				} 
+			else if (quien == jugador) {
+				JOptionPane.showMessageDialog(null, "no puese jugar esa ficha por la derecha");
+				mensaje = "no puese jugar esa ficha por la derecha";
 			}
-		}
-		
 
-		if (mensaje!="no puese jugar esa ficha por la izquierda"&& mensaje!="no puese jugar esa ficha por la derecha") {
-		mesa.add(cual);
-		quien.getJuego().remove(cual);
-		organizar(quien);
-		actualizar();
 		}
-		
-		
 	}
-	
+
+		if (mensaje != "no puese jugar esa ficha por la izquierda"
+				&& mensaje != "no puese jugar esa ficha por la derecha") {
+			
+			mesa.add(cual);
+			quien.getJuego().remove(cual);
+			organizar(quien);
+			verFicha(cual);
+			actualizar();
+			
+			if (turno==jugador)
+				turno=casa;
+			else if (turno==casa)
+				turno = jugador;
+
+		}
+
+	}
+
 	private class Escucha implements MouseListener {
 		@Override
 		public void mouseClicked(MouseEvent e) {
@@ -511,11 +623,21 @@ public class Domino extends JFrame {
 					verFicha(fichaCasa);
 					if (fichaCasa.getValor() > fichaJugador.getValor()) {
 						JOptionPane.showMessageDialog(null, "INICIA LA CASA");
-						turno=jugador;
-					}
-					else {
+						turno = casa;
+						repartir(jugador);
+						repartir(casa);
+
+						actualizar();
+						extrategiaDeLaCasa();
+						iniciarPartida();
+
+					} else {
 						JOptionPane.showMessageDialog(null, "INICIAS TU");
-						turno=jugador;
+						turno = jugador;
+						repartir(jugador);
+						repartir(casa);
+						iniciarPartida();
+						actualizar();
 					}
 					escogiendoFichaInicial = false;
 					iniciarPartida();
@@ -523,20 +645,43 @@ public class Domino extends JFrame {
 
 				}
 
-				else if (turno==jugador) {
-					jugar(jugador, fichaJugador,"izq");
-				actualizar();
-				
+				else if (turno == jugador) {
+					if (puedeJugar(jugador, "izq")) {
+						jugar(jugador, fichaJugador, "izq");
+						turno = casa;
+						extrategiaDeLaCasa();
+						
+					} else if (puedeComer(jugador)) {
+						comer(jugador, fichaJugador);
+						actualizar();
+					}else JOptionPane.showMessageDialog(null, "NO PUEDES COMER, TIRNES FICHAS PARA JUGAR");
+
+					if (jugador.getJuego().isEmpty() && !mesa.isEmpty()) {
+						JOptionPane.showMessageDialog(null, "GANASTE!");
+					}
+
 				}
 			}
-			
+
 			if (e.getButton() == 3 && !escogiendoFichaInicial) {
 
 				Ficha fichaJugador = (Ficha) e.getSource();
-				jugar(jugador, fichaJugador,"der");
-				
+
+				if (puedeJugar(jugador, "der")) {
+					jugar(jugador, fichaJugador, "der");
+					turno = casa;
+					extrategiaDeLaCasa();
+				}
+
+				if (jugador.getJuego().isEmpty() && !mesa.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "GANASTE!");
+				}
+
+				actualizar();
+
 			}
 		}
+
 		@Override
 		public void mouseEntered(MouseEvent arg0) {
 			// TODO Auto-generated method stub

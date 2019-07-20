@@ -13,21 +13,14 @@ public class Ficha extends JButton {
 	private String idFicha;
 	private boolean destapada=false;
 	int posx,posy;
+	String rotadaHacia;
 
-	public int getPosx() {
-		return posx;
+	public String getRotadaHacia() {
+		return rotadaHacia;
 	}
 
-	public void setPosx(int posx) {
-		this.posx = posx;
-	}
-
-	public int getPosy() {
-		return posy;
-	}
-
-	public void setPosy(int posy) {
-		this.posy = posy;
+	public void setRotadaHacia(String rotadaHacia) {
+		this.rotadaHacia = rotadaHacia;
 	}
 
 	public Ficha(int lado1, int lado2) {
