@@ -30,10 +30,14 @@ import java.applet.AudioClip;
 import java.util.TimeZone;;
 
 public class Domino extends JFrame {
-//inicio de la magia
+	/**
+	 *Se define el escucha para para el mouse 
+	 */
 	private Escucha escucharMouse;
 	ArrayList<Ficha> juego1 = new ArrayList<Ficha>();
 	ArrayList<Ficha> juego2 = new ArrayList<Ficha>();
+	/**
+	 * */
 	Random PrimeraFicha = new Random();
 	Random aleatorio = new Random();
 	Jugador jugador = new Jugador(juego1);
@@ -48,11 +52,12 @@ public class Domino extends JFrame {
 	Ficha ultimaFichaDer;
 	int ultimaFichaIzqLadoLibre;
 	int ultimaFichaDerLadoLibre;
-	// private BufferedImage bufferFondo = null;
-	// private JLabel centralLabel;
 
 	public Domino() {
 		try {
+			/**
+			 * Se ejecuta la interfaz gráfica 
+			 */
 			initGUI();
 			escogiendoFichaInicial = true;
 			// Default window config.
@@ -155,7 +160,9 @@ public class Domino extends JFrame {
 		}
 
 	}
-
+	/**
+	 * Rota la ficha
+	 */
 	public void rotar(Ficha cual, String orientacion) {
 		cual.setBounds(cual.getBounds().x, cual.getBounds().y, cual.getBounds().height, cual.getBounds().width);
 		if (orientacion == "izq") {
@@ -169,6 +176,9 @@ public class Domino extends JFrame {
 		actualizar();
 	}
 
+	/**
+	 * Refresca la interfaz gráfica
+	 */
 	public void actualizar() {
 
 		imagenDeFondo.removeAll();

@@ -10,7 +10,7 @@ public class Ficha extends JButton {
 	 */
 	private int lado1, lado2;
 	/**
-	 * si destaoad es true esto quiere decir que la ficha puede verse, es decir esta
+	 * si destapada es true esto quiere decir que la ficha puede verse, es decir esta
 	 * boca arriba en caso de ser false esta estara boca abajo
 	 */
 	private boolean destapada = false;
