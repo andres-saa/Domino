@@ -53,7 +53,6 @@ public class Domino extends JFrame {
 
 	public Domino() {
 		try {
-			
 			initGUI();
 			escogiendoFichaInicial = true;
 			// Default window config.
@@ -80,7 +79,6 @@ public class Domino extends JFrame {
 	}
 
 	public void crearMesa() {
-		baraja.armarBaraja();
 		revolverMesa();
 		escucharMouse = new Escucha();
 		imagenDeFondo.setBounds(0, 0, 1280, 720);

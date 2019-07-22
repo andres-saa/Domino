@@ -8,9 +8,12 @@ public class Baraja {
 
 	ArrayList<Ficha> baraja = new ArrayList();
 	Random aleatorio =new Random();
+	public Baraja () {
+		armarBaraja();		
+	}
 
 	/**
-	 * arma una baraja para jugar haciendo uso de un for doble
+	 * arma una baraja para jugar haciendo uso de un for doble y mete las fichas creadas al array de la baraja
 	 */
 	public void armarBaraja() {
 		//para que las fichas no se repitan ya que ficha(a,b)=ficha(b,a)
@@ -22,9 +25,10 @@ public class Baraja {
 		}
 	}
 	
-	//reparte 7 fichjas a un jugador
-
-
+	/**
+	 * 
+	 * @return la baraja creada 
+	 */
 	public ArrayList<Ficha> getBaraja() {
 		return baraja;
 	};
