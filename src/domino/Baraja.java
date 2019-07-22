@@ -13,7 +13,6 @@ public class Baraja {
 	}
 
 	/**
-	 * arma una baraja para jugar haciendo uso de un for doble
 	 * arma una baraja para jugar haciendo uso de un for doble y mete las fichas creadas al array de la baraja
 	 */
 	public void armarBaraja() {
