@@ -46,6 +46,9 @@ public class Domino extends JFrame {
 	 * Este valor se usará para tomar una ficha aleatorimente.
 	 */
 	Random PrimeraFicha = new Random();
+	/**
+	 * Objeto de la clase Random.
+	 */
 	Random aleatorio = new Random();
 	/**
 	 * Se declara el objeto jugador de la clase Jugador.
@@ -65,7 +68,7 @@ public class Domino extends JFrame {
 	JLabel imagenDeFondo = new JLabel(new ImageIcon("src/imagenes/fondo.jpg"));
 	boolean escogiendoFichaInicial = true;
 	/**
-	 * Se guardan todas las fichas del dominó.
+	 * Se guardan todas las fichas del dominó que se muestran en el tablero inicial.
 	 */
 	ArrayList<Ficha> mesa = new ArrayList<Ficha>();
 	/**
