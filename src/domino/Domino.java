@@ -30,7 +30,7 @@ import java.applet.AudioClip;
 import java.util.TimeZone;;
 
 public class Domino extends JFrame {
-
+//inicio de la magia
 	private Escucha escucharMouse;
 	ArrayList<Ficha> juego1 = new ArrayList<Ficha>();
 	ArrayList<Ficha> juego2 = new ArrayList<Ficha>();
