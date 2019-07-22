@@ -31,7 +31,7 @@ import java.util.TimeZone;;
 
 public class Domino extends JFrame {
 	/**
-	 *Se define el escucha para para el mouse 
+	 *Se define el escucha para el mouse 
 	 */
 	private Escucha escucharMouse;
 	/**
@@ -51,21 +51,24 @@ public class Domino extends JFrame {
 	 */
 	Random aleatorio = new Random();
 	/**
-	 * Se declara el objeto jugador de la clase Jugador.
+	 * Se declara el objeto jugador de la clase Jugador, representa al jugador.
 	 */
 	Jugador jugador = new Jugador(juego1);
 	/**
-	 * Se declara el objeto casa de la clase Jugador.
+	 * Se declara el objeto casa de la clase Jugador, representa al la casa.
 	 */
 	Jugador casa = new Jugador(juego2);
 	/**
-	 * Se declara el objeto baraja de la clase Baraja.
+	 * Se declara el objeto baraja de la clase Baraja, contiene las fichas restantes.
 	 */
 	Baraja baraja = new Baraja();
 	/**
 	 * Se establece el fondo del tablero, donde se colocarán las fichas.
 	 */
 	JLabel imagenDeFondo = new JLabel(new ImageIcon("src/imagenes/fondo.jpg"));
+	/**
+	 * Se define con valor inicial true, se usa para dar inicio a la partida.
+	 */
 	boolean escogiendoFichaInicial = true;
 	/**
 	 * Se guardan todas las fichas del dominó que se muestran en el tablero inicial.
@@ -75,6 +78,9 @@ public class Domino extends JFrame {
 	 * Se establece el panel donde se coloca la imágen de fondo.
 	 */
 	JPanel panel = new JPanel();
+	/**
+	 * Se declara el objeto turno de la clase Jugador, es el jugador que está de turno (jugador, casa).
+	 */
 	Jugador turno = new Jugador(null);
 	Ficha ultimaFichaIzq;
 	Ficha ultimaFichaDer;
@@ -323,7 +329,6 @@ public class Domino extends JFrame {
 
 			for (int i = 0; i < 7; i++) {
 				int cual = aleatorio.nextInt(baraja.getBaraja().size());
-				// baraja.getBaraja().get(cual).setBounds(inicial, 21, 42, 85);
 				casa.getJuego().add(baraja.getBaraja().get(cual));
 				baraja.getBaraja().remove(cual);
 				organizar(casa);
@@ -544,7 +549,7 @@ public class Domino extends JFrame {
 			}
 		}
 
-			// jugarPorLa derecha
+			// jugar por la derecha
 
 			if (lado == "der") {
 				if (cual.getLado1() == ultimaFichaDerLadoLibre || cual.getLado2() == ultimaFichaDerLadoLibre) {
@@ -672,7 +677,6 @@ public class Domino extends JFrame {
 					escogiendoFichaInicial = false;
 					iniciarPartida();
 					actualizar();
-
 				}
 
 				else if (turno == jugador) {
@@ -708,7 +712,6 @@ public class Domino extends JFrame {
 				}
 
 				actualizar();
-
 			}
 		}
 
