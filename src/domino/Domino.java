@@ -47,8 +47,17 @@ public class Domino extends JFrame {
 	 */
 	Random PrimeraFicha = new Random();
 	Random aleatorio = new Random();
+	/**
+	 * Se declara el objeto jugador de la clase Jugador.
+	 */
 	Jugador jugador = new Jugador(juego1);
+	/**
+	 * Se declara el objeto casa de la clase Jugador.
+	 */
 	Jugador casa = new Jugador(juego2);
+	/**
+	 * Se declara el objeto baraja de la clase Baraja.
+	 */
 	Baraja baraja = new Baraja();
 	/**
 	 * Se establece el fondo del tablero, donde se colocarán las fichas.
