@@ -34,18 +34,34 @@ public class Domino extends JFrame {
 	 *Se define el escucha para para el mouse 
 	 */
 	private Escucha escucharMouse;
+	/**
+	 * Se guardan las fichas del jugador 1.
+	 */
 	ArrayList<Ficha> juego1 = new ArrayList<Ficha>();
+	/**
+	 * Se guardan las fichas del jugador 2.
+	 */
 	ArrayList<Ficha> juego2 = new ArrayList<Ficha>();
 	/**
-	 * */
+	 * Este valor se usará para tomar una ficha aleatorimente.
+	 */
 	Random PrimeraFicha = new Random();
 	Random aleatorio = new Random();
 	Jugador jugador = new Jugador(juego1);
 	Jugador casa = new Jugador(juego2);
 	Baraja baraja = new Baraja();
+	/**
+	 * Se establece el fondo del tablero, donde se colocarán las fichas.
+	 */
 	JLabel imagenDeFondo = new JLabel(new ImageIcon("src/imagenes/fondo.jpg"));
 	boolean escogiendoFichaInicial = true;
+	/**
+	 * Se guardan todas las fichas del dominó.
+	 */
 	ArrayList<Ficha> mesa = new ArrayList<Ficha>();
+	/**
+	 * Se establece el panel donde se coloca la imágen de fondo.
+	 */
 	JPanel panel = new JPanel();
 	Jugador turno = new Jugador(null);
 	Ficha ultimaFichaIzq;
@@ -55,9 +71,6 @@ public class Domino extends JFrame {
 
 	public Domino() {
 		try {
-			/**
-			 * Se ejecuta la interfaz gráfica 
-			 */
 			initGUI();
 			escogiendoFichaInicial = true;
 			// Default window config.
@@ -160,9 +173,7 @@ public class Domino extends JFrame {
 		}
 
 	}
-	/**
-	 * Rota la ficha
-	 */
+	
 	public void rotar(Ficha cual, String orientacion) {
 		cual.setBounds(cual.getBounds().x, cual.getBounds().y, cual.getBounds().height, cual.getBounds().width);
 		if (orientacion == "izq") {
@@ -176,9 +187,6 @@ public class Domino extends JFrame {
 		actualizar();
 	}
 
-	/**
-	 * Refresca la interfaz gráfica
-	 */
 	public void actualizar() {
 
 		imagenDeFondo.removeAll();
